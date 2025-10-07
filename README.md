@@ -1,20 +1,86 @@
-# Project XYZ
+# **Telecom Churn Analytics:** 
+## ***Building Predictive Models to Improve Customer Retention***
 
-**Project XYZ** is a comprehensive data analysis tool designed to streamline data exploration, analysis, and visualisation. The tool supports multiple data formats and provides an intuitive interface for both novice and expert data scientists.
+## 🔹 Abstract
+This project explores customer churn prediction for a telecom company using the **Telecom Customer Churn dataset**. 
+The analysis follows a structured workflow from **data profiling → data cleaning → EDA → feature engineering → ML modeling → churn prediction application**. 
 
-# ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+## 🔹 Table of Contents
+1. Introduction & Business Requirements  
+2. Dataset Description
+3. Hypothesis and Methodology
+4. 
+
+## 🔹 1. Introduction and Business Requirements
+Customer churn is a major challenge in the telecom industry. Retaining existing customers is more cost-effective than acquiring new ones. 
+The goal of this project is to build a churn prediction model and identify key drivers of churn.  
+
+✅ Key Requirements
+* Accurate Churn Prediction
+
+    * Develop a model to predict whether a customer is likely to churn in the next billing cycle.
+
+* Key Driver Identification
+
+    * Pinpoint the most influential demographic and subscription attributes driving churn.
+
+* Actionable Insights
+
+    * Translate model outputs into retention strategies (e.g., targeted offers, loyalty programs).
+
+* Seamless Integration
+
+    * Deploy the model into existing CRM and marketing systems for real‑time use.
+
+* Performance Metrics
+
+    * Achieve at least X% recall on churners (to minimize missed at‑risk customers) while maintaining acceptable precision.
+
+📈 Business Impact
+* Reduce customer churn rate
+
+* Improve retention campaign ROI
+
+* Strengthen customer loyalty and lifetime value
+
+🔹 2. Dataset Description 
+ * Datasets used for this analysis is the retail data set from Kaggle (https://www.kaggle.com/datasets/mubeenshehzadi/customer-churn-dataset/). 
+
+## 📄 Customer Churn Dataset Fields
+
+- **`customerID`**: Unique ID assigned to each customer  
+- **`gender`**: Gender of the customer (`Male`, `Female`)  
+- **`SeniorCitizen`**: Whether the customer is a senior citizen (`1` = Yes, `0` = No)  
+- **`Partner`**: If the customer has a partner (`Yes`/`No`)  
+- **`Dependents`**: If the customer has dependents (`Yes`/`No`)  
+- **`tenure`**: Number of months the customer remained with the company  
+- **`PhoneService`**: Whether the customer has a phone service (`Yes`/`No`)  
+- **`MultipleLines`**: Customer possesses multiple phone lines (`No`, `Yes`, `No phone service`)  
+- **`InternetService`**: Type of internet service (`DSL`, `Fiber optic`, `No`)  
+- **`OnlineSecurity`**: Whether the customer has online security add‑on (`Yes`, `No`, `No internet`)  
+- **`OnlineBackup`**: Whether the customer has online backup service (`Yes`, `No`, `No internet`)  
+- **`DeviceProtection`**: Device protection plan (`Yes`, `No`, `No internet`)  
+- **`TechSupport`**: Tech support service (`Yes`, `No`, `No internet`)  
+- **`StreamingTV`**: Access to streaming TV (`Yes`, `No`, `No internet`)  
+- **`StreamingMovies`**: Access to streaming movies (`Yes`, `No`, `No internet`)  
+- **`Contract`**: Contract type (`Month-to-month`, `One year`, `Two year`)  
+- **`PaperlessBilling`**: Whether billing is paperless (`Yes`/`No`)  
+- **`PaymentMethod`**: Method of payment (`Electronic check`, `Mailed check`, `Bank transfer`, `Credit card`)  
+- **`MonthlyCharges`**: Amount charged to the customer monthly  
+- **`TotalCharges`**: Total amount charged during the customer’s tenure  
+- **`Churn`**: Whether the customer left the company (`Yes` = churned, `No` = retained)
 
 
-## Dataset Content
-* Describe your dataset. Choose a dataset of reasonable size to avoid exceeding the repository's maximum size of 100Gb.
+## 🔹 3.Hypothesis and how to validate?
+* H1: Customers on month-to-month contracts are more likely to churn than those on annual contracts.
 
+* H2: Higher monthly charges are positively correlated with churn probability.
 
-## Business Requirements
-* Describe your business requirements
+* H3: Customers with longer tenure are less likely to churn.
 
+* H4: Customers who use multiple services (e.g., internet + phone + TV) have lower churn rates than single-service customers.
 
-## Hypothesis and how to validate?
-* List here your project hypothesis(es) and how you envision validating it (them) 
+* H5: Payment method (e.g., electronic check vs. direct debit) influences churn likelihood.
 
 ## Project Plan
 * Outline the high-level steps taken for the analysis.
@@ -88,3 +154,6 @@
 
 ## Acknowledgements (optional)
 * Thank the people who provided support through this project.
+
+
+# ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
