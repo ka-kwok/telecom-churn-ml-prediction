@@ -105,8 +105,16 @@ Remarks:
 * How was the data managed throughout the collection, processing, analysis and interpretation steps?
 * Why did you choose the research methodologies you used?
 
-## The rationale to map the business requirements to the Data Visualisations
-* List your business requirements and a rationale to map them to the Data Visualisations
+## Hypothesis Validation
+
+| **Hypothesis** | **Variable Type(s)** | **Test Type** | **Purpose** | **Interpretation**  |
+| --- | --- | --- | --- | --- |
+| **H1:** Customers on *month-to-month* contracts are more likely to churn. | Categorical (Contract Type vs Churn)| **Chi-Square Test of Independence** | Tests whether churn rate depends on contract type. | Significant p-value → churn is associated with contract type. |
+| **H2:** Customers with longer *tenure* are less likely to churn.| Continuous (Tenure) vs Binary (Churn)  | **Independent Samples t-test** or **Mann–Whitney U test** (if not normal) | Compares average tenure between churned and non-churned customers. | Lower mean tenure among churned → supports H2. |
+| **H3:** *SeniorCitizen* customers are more likely to churn.  | Binary (SeniorCitizen) vs Binary (Churn)| **Chi-Square Test**  | Checks if churn is associated with senior status. | Significant p-value → churn depends on senior status. |
+| **H4:** Customers with *fiber optic* internet have higher churn rates.| Categorical (InternetService vs Churn)| **Chi-Square Test**  | Tests whether churn depends on internet service type. | Higher churn % among “Fiber optic” → supports H4. |
+| **H5:** Internet customers with *OnlineSecurity* and *TechSupport* add-ons are less likely to churn. | Categorical (OnlineSecurity, TechSupport vs Churn) | **Chi-Square Test** for each variable  | Checks if having add-ons reduces churn probability.| Lower churn % among customers with “Yes” → supports H5. |
+
 
 ## Analysis techniques used
 * List the data analysis methods used and explain limitations or alternative approaches.
