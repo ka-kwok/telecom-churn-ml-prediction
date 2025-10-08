@@ -78,24 +78,27 @@ The goal of this project is to build a churn prediction model and identify key d
 - Note: `customerID` identified as **PII** and removed  
 
 ## 🔹 3.Hypothesis and Methodology
-* H1: Customers on month-to-month contracts are more likely to churn than those on annual contracts.
+**H1:** Customers on **`month-to-month`** contracts are more likely to churn than those on annual contracts.
 
-* H2: Higher monthly charges are positively correlated with churn probability.
+**H2:** Customers with longer **`tenure`** are less likely to churn.
 
-* H3: Customers with longer tenure are less likely to churn.
+**H3:** **`SeniorCitizen`** Customers are more likey to churn.
 
-* H4: Customers who use multiple services (e.g., internet + phone + TV) have lower churn rates than single-service customers.
+**H4:** Customers who use **`fiber optic`** internet services have higer churn rates.
 
-* H5: Payment method (e.g., electronic check vs. direct debit) influences churn likelihood.
+**H5:** Internet Customers with add-ons services like **`OnlineSecurity`** and **`TechSupport`** are less likey to churn.
 
-Workflow includes:  
+** Project Plan and Workflow:**  
 - Data cleaning & preprocessing  
 - EDA & visualization  
 - Feature engineering  
 - Model training & tuning (AdaBoost, RF, XGBoost)
 - Evaluation & explainability with feature importance
+- Dashboard presentation with streamlit
 
-Remarks: As the dataset is more likely of non-linear patterns, Logistic Regression is not considered in Model Training.
+Remarks: 
+1. As the dataset is more likely in non-linear patterns, Logistic Regression is not considered in model training.
+2. Dashboard presentation with intuitive analytics and prediction app for non-technical stakeholders.
 
 ## Project Plan
 * Outline the high-level steps taken for the analysis.
