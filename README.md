@@ -9,7 +9,8 @@ The analysis follows a structured workflow from **data profiling → data cleani
 1. Introduction & Business Requirements  
 2. Dataset Description
 3. Hypothesis and Methodology
-4. 
+4. Exploratory Data Analysis (EDA)
+5. Feature Engineering & Data Cleaning
 
 ## 🔹 1. Introduction and Business Requirements
 Customer churn is a major challenge in the telecom industry. Retaining existing customers is more cost-effective than acquiring new ones. 
@@ -34,7 +35,7 @@ The goal of this project is to build a churn prediction model and identify key d
 
 * Performance Metrics
 
-    * Achieve at least X% recall on churners (to minimize missed at‑risk customers) while maintaining acceptable precision.
+    * Achieve at least 80% recall on churners (to minimize missed at‑risk customers) while maintaining acceptable precision.
 
 📈 Business Impact
 * Reduce customer churn rate
@@ -88,7 +89,19 @@ The goal of this project is to build a churn prediction model and identify key d
 
 **H5:** Internet Customers with add-ons services like **`OnlineSecurity`** and **`TechSupport`** are less likey to churn.
 
-** Project Plan and Workflow:**  
+## 📌 Hypothesis Validation
+
+| **Hypothesis** | **Variable Type(s)** | **Test Type** | **Purpose** | **Interpretation**  |
+| --- | --- | --- | --- | --- |
+| **H1:** Customers on *month-to-month* contracts are more likely to churn. | Categorical (Contract Type vs Churn)| **Chi-Square Test of Independence** | Tests whether churn rate depends on contract type. | Significant p-value → churn is associated with contract type. |
+| **H2:** Customers with longer *tenure* are less likely to churn.| Continuous (Tenure) vs Binary (Churn)  | **Independent Samples t-test** or **Mann–Whitney U test** (if not normal) | Compares average tenure between churned and non-churned customers. | Lower mean tenure among churned → supports H2. |
+| **H3:** *SeniorCitizen* customers are more likely to churn.  | Binary (SeniorCitizen) vs Binary (Churn)| **Chi-Square Test**  | Checks if churn is associated with senior status. | Significant p-value → churn depends on senior status. |
+| **H4:** Customers with *fiber optic* internet have higher churn rates.| Categorical (InternetService vs Churn)| **Chi-Square Test**  | Tests whether churn depends on internet service type. | Higher churn % among “Fiber optic” → supports H4. |
+| **H5:** Internet customers with *OnlineSecurity* and *TechSupport* add-ons are less likely to churn. | Categorical (OnlineSecurity, TechSupport vs Churn) | **Chi-Square Test** for each variable  | Checks if having add-ons reduces churn probability.| Lower churn % among customers with “Yes” → supports H5. |
+
+
+## Project Plan
+**Project Plan and Workflow:**  
 - Data cleaning & preprocessing  
 - EDA & visualization  
 - Feature engineering  
@@ -100,21 +113,48 @@ Remarks:
 1. As the dataset is more likely in non-linear patterns, Logistic Regression is not considered in model training.
 2. Dashboard presentation with intuitive analytics and prediction app for non-technical stakeholders.
 
-## Project Plan
-* Outline the high-level steps taken for the analysis.
-* How was the data managed throughout the collection, processing, analysis and interpretation steps?
-* Why did you choose the research methodologies you used?
 
-## Hypothesis Validation
+## 🔹 4. Exploratory Data Analysis (EDA)
+- **Churn distribution**: ~26% churned (imbalanced dataset)  
+- **Tenure & Contract Type**: strongest relationship with churn  
+- **Churn correlation analysis**: 
+    - Service Type
+    - Tenure and contract Type
+    - Senior Customers
+    - Internet add-on serivces 
+- **Visualizations**: churn rates and distribution with barplots, piecharts, boxplots and parallel categories graph  
 
-| **Hypothesis** | **Variable Type(s)** | **Test Type** | **Purpose** | **Interpretation**  |
-| --- | --- | --- | --- | --- |
-| **H1:** Customers on *month-to-month* contracts are more likely to churn. | Categorical (Contract Type vs Churn)| **Chi-Square Test of Independence** | Tests whether churn rate depends on contract type. | Significant p-value → churn is associated with contract type. |
-| **H2:** Customers with longer *tenure* are less likely to churn.| Continuous (Tenure) vs Binary (Churn)  | **Independent Samples t-test** or **Mann–Whitney U test** (if not normal) | Compares average tenure between churned and non-churned customers. | Lower mean tenure among churned → supports H2. |
-| **H3:** *SeniorCitizen* customers are more likely to churn.  | Binary (SeniorCitizen) vs Binary (Churn)| **Chi-Square Test**  | Checks if churn is associated with senior status. | Significant p-value → churn depends on senior status. |
-| **H4:** Customers with *fiber optic* internet have higher churn rates.| Categorical (InternetService vs Churn)| **Chi-Square Test**  | Tests whether churn depends on internet service type. | Higher churn % among “Fiber optic” → supports H4. |
-| **H5:** Internet customers with *OnlineSecurity* and *TechSupport* add-ons are less likely to churn. | Categorical (OnlineSecurity, TechSupport vs Churn) | **Chi-Square Test** for each variable  | Checks if having add-ons reduces churn probability.| Lower churn % among customers with “Yes” → supports H5. |
 
+## 🔹 5. Feature Engineering & Data Cleaning
+The preprocessing pipeline is designed to transform the raw Telecom Customer Churn dataset into a clean, machine-learning-ready format. It standardises data quality, engineers meaningful service-based features, and applies robust encoding and scaling methods to support predictive modelling.
+
+#### 1️⃣ ETL & Data Cleaning (No Scaling)
+**Purpose:** Prepare raw data for analysis by removing noise and ensuring data integrity.
+
+**Main Steps:**
+- Drop personally identifiable information (`customerID`).
+- ConvertI `TotalCharges` to numeric and impute missing values using: `TotalCharges` = `MonthlyCharges` * `tenure`
+- Add derived features:
+  - **CustomerType:** Phone only / Internet only / Both  
+  - **NumInternetServices:** Count of active internet add-ons
+- Handle missing values with median imputation for numerical columns.
+
+📁 **Output:** `telecom_customer_churn_cleaned.csv`  
+✅ Cleaned dataset for EDA (no scaling applied).
+
+---
+
+#### 2️⃣ Feature Encoding & Scaling (For Modeling)
+**Purpose:** Prepare features for machine learning algorithms.
+
+**Transformations:**
+- **Numerical columns:** Standardized using `StandardScaler()`.
+- **Categorical columns:** One-hot encoded using `OneHotEncoder()` (drop first to avoid multicollinearity).
+
+📁 **Output:** `telecom_customer_churn_encoded.csv`  
+✅ Fully processed dataset for ML training.
+
+---
 
 ## Analysis techniques used
 * List the data analysis methods used and explain limitations or alternative approaches.
