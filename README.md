@@ -11,7 +11,7 @@ The analysis follows a structured workflow from **data profiling → data cleani
 3. [Hypothesis and Methodology]((#🔹-3-hypothesis-and-methodology))
 4. [Exploratory Data Analysis (EDA)]((#🔹-4-exploratory-data-analysis-eda))
 5. [Feature Engineering & Data Cleaning](#🔹-5-feature-engineering--data-cleaning)
-6. [Model Development & Evaluation](🔹-6-model-development--evaluation)
+6. [Model Development & Evaluation](#🔹-6-model-development--evaluation)
 7. 
 
 ## 🔹 1. Introduction and Business Requirements
@@ -112,10 +112,7 @@ The project aims to identify key drivers of customer churn and develop a predict
 - Evaluation & explainability with confusion matrix, feature importance and SHAP
 - Dashboard presentation with streamlit
 
-Remarks: 
-1. As the dataset is more likely in non-linear patterns, Logistic Regression is not considered in model training.
-2. Dashboard presentation with intuitive analytics and prediction app for non-technical stakeholders.
-
+Agile Methodology
 
 ## 🔹 4. Exploratory Data Analysis (EDA)
 - **Churn distribution**: ~26% churned (imbalanced dataset)  
