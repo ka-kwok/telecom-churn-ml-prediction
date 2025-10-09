@@ -6,15 +6,18 @@ This project explores customer churn prediction for a telecom company using the 
 The analysis follows a structured workflow from **data profiling → data cleaning → EDA → feature engineering → ML modeling → churn prediction application**. 
 
 ## 🔹 Table of Contents
-1. Introduction & Business Requirements  
-2. Dataset Description
-3. Hypothesis and Methodology
-4. Exploratory Data Analysis (EDA)
-5. Feature Engineering & Data Cleaning
+1. [Introduction & Business Requirements](#🔹-1-introduction-and-business-requirements)  
+2. [Dataset Description](#🔹-2-data-description)
+3. [Hypothesis and Methodology]((#🔹-3-hypothesis-and-methodology))
+4. [Exploratory Data Analysis (EDA)]((#🔹-4-exploratory-data-analysis-eda))
+5. [Feature Engineering & Data Cleaning](#🔹-5-feature-engineering--data-cleaning)
+6. [Model Development & Evaluation](🔹-6-model-development--evaluation)
+7. 
 
 ## 🔹 1. Introduction and Business Requirements
 Customer churn is a major challenge in the telecom industry. Retaining existing customers is more cost-effective than acquiring new ones. 
-The goal of this project is to build a churn prediction model and identify key drivers of churn.  
+
+The project aims to identify key drivers of customer churn and develop a predictive model. Insights will inform business decisions, enhance retention strategies, and improve marketing effectiveness and product ROI.
 
 ✅ Key Requirements
 * Accurate Churn Prediction
@@ -45,7 +48,12 @@ The goal of this project is to build a churn prediction model and identify key d
 * Strengthen customer loyalty and lifetime value
 
 ## 🔹 2. Dataset Description 
- * Datasets used for this analysis is the retail data set from Kaggle (https://www.kaggle.com/datasets/mubeenshehzadi/customer-churn-dataset/). 
+ ### Dataset Summary
+- Source: Kaggle [Telecom Customer Churn dataset](https://www.kaggle.com/datasets/mubeenshehzadi/customer-churn-dataset/))  
+- ~7,000 records, 21 features  
+- Features: Tenure, Contract, Internet services, Monthly & Total Charges, etc
+- Target: **Churn (Yes/No)**  
+- Note: `customerID` identified as **PII** and removed  
 
 ### 📄 Customer Churn Dataset Fields
 
@@ -71,12 +79,7 @@ The goal of this project is to build a churn prediction model and identify key d
 - **`TotalCharges`**: Total amount charged during the customer’s tenure  
 - **`Churn`**: Whether the customer left the company (`Yes` = churned, `No` = retained)
 
-### Dataset Summary
-- Source: Kaggle Telecom Customer Churn dataset  
-- ~7,000 records, 21 features  
-- Features: Tenure, Contract, Internet services, Monthly & Total Charges  
-- Target: **Churn (Yes/No)**  
-- Note: `customerID` identified as **PII** and removed  
+
 
 ## 🔹 3.Hypothesis and Methodology
 **H1:** Customers on **`month-to-month`** contracts are more likely to churn than those on annual contracts.
@@ -97,7 +100,7 @@ The goal of this project is to build a churn prediction model and identify key d
 | **H2:** Customers with longer *tenure* are less likely to churn.| Continuous (Tenure) vs Binary (Churn)  | **Independent Samples t-test** or **Mann–Whitney U test** (if not normal) | Compares average tenure between churned and non-churned customers. | Lower mean tenure among churned → supports H2. |
 | **H3:** *SeniorCitizen* customers are more likely to churn.  | Binary (SeniorCitizen) vs Binary (Churn)| **Chi-Square Test**  | Checks if churn is associated with senior status. | Significant p-value → churn depends on senior status. |
 | **H4:** Customers with *fiber optic* internet have higher churn rates.| Categorical (InternetService vs Churn)| **Chi-Square Test**  | Tests whether churn depends on internet service type. | Higher churn % among “Fiber optic” → supports H4. |
-| **H5:** Internet customers with *OnlineSecurity* and *TechSupport* add-ons are less likely to churn. | Categorical (OnlineSecurity, TechSupport vs Churn) | **Chi-Square Test** for each variable  | Checks if having add-ons reduces churn probability.| Lower churn % among customers with “Yes” → supports H5. |
+| **H5:** Internet customers with *OnlineSecurity* and *TechSupport* add-ons are less likely to churn. | Categorical (OnlineSecurity, TechSupport vs Churn) | **Chi-Square Test** for each variable  | Checks if having add-ons reduces churn probability.| Lower churn % among customers with these add-on service → supports H5. |
 
 
 ## Project Plan
@@ -105,8 +108,8 @@ The goal of this project is to build a churn prediction model and identify key d
 - Data cleaning & preprocessing  
 - EDA & visualization  
 - Feature engineering  
-- Model training & tuning (AdaBoost, RF, XGBoost)
-- Evaluation & explainability with feature importance
+- Model training & tuning (LogisticRegression, AdaBoost, RF, XGBoost)
+- Evaluation & explainability with confusion matrix, feature importance and SHAP
 - Dashboard presentation with streamlit
 
 Remarks: 
@@ -128,39 +131,107 @@ Remarks:
 ## 🔹 5. Feature Engineering & Data Cleaning
 The preprocessing pipeline is designed to transform the raw Telecom Customer Churn dataset into a clean, machine-learning-ready format. It standardises data quality, engineers meaningful service-based features, and applies robust encoding and scaling methods to support predictive modelling.
 
-#### 1️⃣ ETL & Data Cleaning (No Scaling)
-**Purpose:** Prepare raw data for analysis by removing noise and ensuring data integrity.
+# ETL & Data Cleaning (No Scaling)
 
-**Main Steps:**
-- Drop personally identifiable information (`customerID`).
-- ConvertI `TotalCharges` to numeric and impute missing values using: `TotalCharges` = `MonthlyCharges` * `tenure`
-- Add derived features:
-  - **CustomerType:** Phone only / Internet only / Both  
-  - **NumInternetServices:** Count of active internet add-ons
-- Handle missing values with median imputation for numerical columns.
+## Purpose
+Prepare raw telecom churn data for analysis by ensuring consistency, handling missing values, and engineering meaningful features.
 
-📁 **Output:** `telecom_customer_churn_cleaned.csv`  
-✅ Cleaned dataset for EDA (no scaling applied).
+## Key Steps
+### 1. Data Cleaning
+- Removed personally identifiable information (`customerID`) to ensure compliance with data governance.  
+- Converted `TotalCharges` to numeric and handled invalid or missing entries.
 
----
+### 2. Missing Value Handling
+- Imputed missing `TotalCharges` values using the relationship:  
+  `TotalCharges = MonthlyCharges * tenure`  
+- Applied median imputation for remaining numerical fields.
+
+### 3. Feature Engineering
+- **CustomerType:** Classified customers as *Phone only*, *Internet only*, or *Both* based on service subscriptions.  
+- **NumInternetServices:** Counted active internet add-ons such as *OnlineSecurity*, *TechSupport*, and *StreamingTV*.
+
+## Notes
+Scaling is not applied at this stage to preserve the original data distribution for exploratory analysis and statistical testing.
+
+## Output File
+`telecom_customer_churn_cleaned.csv`
+
 
 #### 2️⃣ Feature Encoding & Scaling (For Modeling)
-**Purpose:** Prepare features for machine learning algorithms.
+**Purpose:** Prepare encoded features for machine learning training.
 
 **Transformations:**
 - **Numerical columns:** Standardized using `StandardScaler()`.
 - **Categorical columns:** One-hot encoded using `OneHotEncoder()` (drop first to avoid multicollinearity).
 
 📁 **Output:** `telecom_customer_churn_encoded.csv`  
-✅ Fully processed dataset for ML training.
 
----
+## 🔹 6. Model Development & Evaluation
+Models compared:  
+- Logistic Regression (best)  
+- Adaboost  
+- XGBoost  
 
-## Analysis techniques used
-* List the data analysis methods used and explain limitations or alternative approaches.
-* How did you structure the data analysis techniques. Justify your response.
-* Did the data limit you, and did you use an alternative approach to meet these challenges?
-* How did you use generative AI tools to help with ideation, design thinking and code optimisation?
+| Model                   | Accuracy | Precision | Recall  | F1   | ROC-AUC |
+|-------------------------|----------|-----------|---------|------|---------|
+| **Logistic Regression** | **0.82** | **0.69**  | **0.54**| 0.60 | 0.85    |
+| Adaboost                | 0.81     | 0.69      | 0.50    | 0.58 | **0.85**|
+| XGBoost                 | 0.81     | 0.67      | 0.50.   | 0.58 | 0.85    |
+
+**SHAP Analysis findings:**
+
+🔴 **Top Churn Risk Factors (Red = High Impact):**
+* Tenure (Most Important)
+    * Low tenure (blue dots on right) = HIGH churn risk
+    * High tenure (red dots on left) = LOW churn risk
+    * Business insight: New customers are your highest risk segment
+
+* Payment Method - Electronic Check
+    * Customers using electronic check have higher churn probability
+    * This payment method appears less stable than others
+
+* Internet Service - Fiber Optic
+
+    * Despite being premium service, fiber customers show higher churn
+    * May indicate service quality or pricing issues
+
+🔵 **Top Churn Protection Factors (Blue = Low Impact):**
+* Contract - Two Year
+    * Long-term contracts significantly reduce churn risk
+    * Strongest retention tool available
+
+* Online Security & Tech Support
+    * These add-on services provide strong churn protection
+    * Customers with these services are much less likely to leave
+
+*SHAP Plot Types Generated:*
+* Beeswarm Plot: Shows feature impact distribution across all customers
+* Waterfall Plot: Explains one specific customer's prediction
+
+**Key Business Insights:**
+
+High-Risk Customer Profile:
+
+* New customers (low tenure)
+* Electronic check payment method
+* Fiber optic internet service
+* No add-on security services
+
+Low-Risk Customer Profile:
+
+* Long-term customers (high tenure)
+* Two-year contracts
+* Online security and tech support services
+* Non-electronic payment methods
+
+**Strategic Recommendations:**
+
+* Early Intervention: Focus retention efforts on customers with < 12 months tenure
+* Payment Method: Encourage migration from electronic check to more stable payment methods
+* Service Bundling: Promote OnlineSecurity and TechSupport as retention tools
+* Contract Strategy: Incentivize longer-term contracts with discounts
+* Fiber Service Review: Investigate quality issues and review pricing strategy affecting fiber optic customers
+
 
 ## Ethical considerations
 * Were there any data privacy, bias or fairness issues with the data?
