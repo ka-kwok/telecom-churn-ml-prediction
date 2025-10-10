@@ -104,6 +104,13 @@ def page2_body():
         ax[1].pie(online_security_counts.values, labels=online_security_counts.index, autopct='%1.1f%%')
         ax[1].set_title('Proportion of Churn with Online Security')
         ax[1].legend(title='Churn')
+        # add an arrow annotation between the two pie charts
+        ax[0].annotate(
+            "", 
+            xy=(1.15, 0.5), xytext=(1.05, 0.5), 
+            xycoords='axes fraction', textcoords='axes fraction', 
+            arrowprops=dict(arrowstyle="->", color="Purple", lw=2)
+        )   
         st.pyplot(fig)
 
         # Proportion of the target variable 'Churn' by tech support feature
@@ -115,6 +122,14 @@ def page2_body():
         ax[1].pie(tech_support_counts.values, labels=tech_support_counts.index, autopct='%1.1f%%')
         ax[1].set_title('Proportion of Churn with Tech Support')
         ax[1].legend(title='Churn')
+        ax[0].annotate(
+            "", 
+            xy=(1.15, 0.5), xytext=(1.05, 0.5), 
+            xycoords='axes fraction', textcoords='axes fraction', 
+            arrowprops=dict(arrowstyle="->", color="Purple", lw=2)
+        )   
+        st.pyplot(fig)
+
         st.pyplot(fig)
 
         st.title("Interactive Churn Rates Explorer")
