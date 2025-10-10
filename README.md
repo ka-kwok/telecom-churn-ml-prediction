@@ -12,7 +12,11 @@ The analysis follows a structured workflow from **data profiling → data cleani
 4. [Exploratory Data Analysis (EDA)]((#🔹-4-exploratory-data-analysis-eda))
 5. [Feature Engineering & Data Cleaning](#🔹-5-feature-engineering--data-cleaning)
 6. [Model Development & Evaluation](#🔹-6-model-development--evaluation)
-7. 
+7. [Explainability & Insights](#🔹-7-explainability--insights)
+8. [Ethical Considerations & Data Governance](#🔹-8-ethical-considerations--data-governance)
+9. [Project Plan](#🔹-9-project-plan)
+10. 
+
 
 ## 🔹 1. Introduction and Business Requirements
 Customer churn is a major challenge in the telecom industry. Retaining existing customers is more cost-effective than acquiring new ones. 
@@ -103,17 +107,6 @@ The project aims to identify key drivers of customer churn and develop a predict
 | **H5:** Internet customers with *OnlineSecurity* and *TechSupport* add-ons are less likely to churn. | Categorical (OnlineSecurity, TechSupport vs Churn) | **Chi-Square Test** for each variable  | Checks if having add-ons reduces churn probability.| Lower churn % among customers with these add-on service → supports H5. |
 
 
-## Project Plan
-**Project Plan and Workflow:**  
-- Data cleaning & preprocessing  
-- EDA & visualization  
-- Feature engineering  
-- Model training & tuning (LogisticRegression, AdaBoost, RF, XGBoost)
-- Evaluation & explainability with confusion matrix, feature importance and SHAP
-- Dashboard presentation with streamlit
-
-Agile Methodology
-
 ## 🔹 4. Exploratory Data Analysis (EDA)
 - **Churn distribution**: ~26% churned (imbalanced dataset)  
 - **Tenure & Contract Type**: strongest relationship with churn  
@@ -164,6 +157,7 @@ Scaling is not applied at this stage to preserve the original data distribution 
 📁 **Output:** `telecom_customer_churn_encoded.csv`  
 
 ## 🔹 6. Model Development & Evaluation
+
 Models compared:  
 - Logistic Regression (best)  
 - Adaboost  
@@ -175,8 +169,10 @@ Models compared:
 | Adaboost                | 0.81     | 0.69      | 0.50    | 0.58 | **0.85**|
 | XGBoost                 | 0.81     | 0.67      | 0.50.   | 0.58 | 0.85    |
 
-**SHAP Analysis findings:**
 
+## 🔹 7. Explainability & Insights
+
+#### **SHAP Analysis findings:**
 🔴 **Top Churn Risk Factors (Red = High Impact):**
 * Tenure (Most Important)
     * Low tenure (blue dots on right) = HIGH churn risk
@@ -230,9 +226,48 @@ Low-Risk Customer Profile:
 * Fiber Service Review: Investigate quality issues and review pricing strategy affecting fiber optic customers
 
 
-## Ethical considerations
-* Were there any data privacy, bias or fairness issues with the data?
-* How did you overcome any legal or societal issues?
+## 🔹 8. Ethical Considerations & Data Governance
+####  Ethical Handling of Personal Identifiers
+
+The variable `customerID` was removed during data preprocessing to eliminate any potential personally identifiable information (PII). This ensures that no individual customer can be directly identified from the dataset, aligning the project with data privacy regulations such as GDPR and CCPA. By anonymizing the dataset, the analysis focuses solely on behavioral and service-related patterns, maintaining both ethical integrity and data governance compliance.
+
+#### Ethical Treatment of Demographic Attributes
+
+The feature `SeniorCitizen` and `gender` were initially included during exploratory analysis to understand demographic patterns influencing customer churn. Statistical tests indicated a measurable difference in churn behavior between senior and non-senior customers, offering valuable business insights for designing age-friendly retention programs.
+
+However, to ensure compliance with ethical AI principles and avoid potential age-related and gender-related bias, these attributes were excluded from the final predictive model. The decision prevents the model from making churn predictions based on age and gender proxies, aligning with data governance standards such as GDPR’s fairness principle and responsible AI practices.
+
+This approach maintains analytical transparency while safeguarding against discrimination, ensuring that predictions are driven by behavioral and service-related features rather than demographic attributes.
+
+## 🔹 9. Project Plan
+**Implementation & Maintenance Workflow:**  
+- Ideation and Project Setup
+- Data cleaning and preprocessing  
+- Exploratory Data Analysis (EDA) and visualization  
+- Feature engineering and data transformation  
+- Model training and hyperparameter tuning (Logistic Regression, AdaBoost, Random Forest, XGBoost)  
+- Model evaluation and explainability (confusion matrix, feature importance, SHAP)  
+- Dashboard development using Streamlit for interactive churn prediction and monitoring  
+- Model retraining scheduled monthly with new data  
+- Continuous monitoring for data drift and retraining as needed  
+- Future enhancement: Full deployment as a Streamlit-based monitoring dashboard  
+
+### Agile Methodology
+
+This project follows an **Agile Data Science** approach with short, iterative development cycles.  
+Each sprint focuses on one phase — from data cleaning to model deployment — allowing continuous feedback, testing, and improvement.  
+
+- **Sprint 1:** Ideation  
+- **Sprint 2:** Project Setup  
+- **Sprint 3:** ETL 
+- **Sprint 4:** EDA and Data Visualization  
+- **Sprint 5:** Predictive Model training and evaluation  
+- **Sprint 6:** Streamlit Dashboard Design and Deployment
+- **Sprint 7:** Documentation and Review
+
+For more details, please visit the [Project Kanban Board](https://github.com/users/ka-kwok/projects/8) on Github.
+
+This iterative workflow with sub-tasks on each sprint ensures flexibility, rapid experimentation, and continuous model improvement based on new data and stakeholder feedback.
 
 ## Dashboard Design
 * List all dashboard pages and their content, either blocks of information or widgets, like buttons, checkboxes, images, or any other item that your dashboard library supports.
