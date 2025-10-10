@@ -21,7 +21,7 @@ def page2_body():
     df = load_data()
 
     # Sidebar filters
-    st.sidebar.header("🔍 Filter Options")
+    st.sidebar.header("🔍 Filter")
     selected_contracts = st.sidebar.multiselect("Contract Type", df["Contract"].unique(), default=df["Contract"].unique())
     selected_churn = st.sidebar.multiselect("Churn Status", df["Churn"].unique(), default=df["Churn"].unique())
     tenure_range = st.sidebar.slider("Tenure Range (Months)", int(df["tenure"].min()), int(df["tenure"].max()), (0, 72))
@@ -36,9 +36,8 @@ def page2_body():
     # Section: Tenure vs Churn by Contract
     with tab1:
     
-        st.subheader("📦 Churn Distribution by Contract Type and Tenure")
         fig1 = px.box(filtered_df, x="Contract", y="tenure", color="Churn",
-                    title="Tenure vs Contract Type",
+                    title="Churn Distribution: Tenure & Contract Type",
                     labels={"tenure": "Tenure (Months)", "Contract": "Contract Type", "Churn": "Churn"},
                     points="all",
                     hover_data=["MonthlyCharges", "PaymentMethod", "InternetService"])

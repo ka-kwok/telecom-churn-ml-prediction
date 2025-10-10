@@ -16,5 +16,6 @@ class MultiPage:
         self.pages.append({"title": title, "function": func})
 
     def run(self) -> None:
-        page = st.sidebar.radio("📊 Dashboard \n", self.pages, format_func=lambda page: page["title"])
+        page = st.sidebar.title("📊 Dashboard")
+        page = st.sidebar.radio(" \n", self.pages, format_func=lambda page: page["title"])
         page["function"]()

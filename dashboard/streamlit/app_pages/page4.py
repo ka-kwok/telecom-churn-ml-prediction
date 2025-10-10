@@ -9,7 +9,7 @@ import plotly.express as px
 
 def page4_body():
     st.title("🎯 Churn Prediction App")
-    st.markdown("### *AI-Powered Customer Retention Tool*")
+    st.markdown("##### *AI-Powered Customer Retention Tool*")
     st.write("💡 **Use the sidebar to input customer attributes and get real-time churn predictions with explanations!**")
     st.write("---")
 
@@ -82,43 +82,48 @@ def page4_body():
         return
 
     # Customer input sidebar
-    st.sidebar.header("📋 Customer Information")
-    st.sidebar.markdown("*Enter customer details for churn prediction*")
+    st.sidebar.subheader("📋 Enter Customer Information")
     
     # Create input fields
     col1, col2 = st.sidebar.columns(2)
     
     with col1:
-        tenure = st.number_input("📅 Tenure (months)", min_value=0, max_value=72, value=12)
-        monthly_charges = st.number_input("💰 Monthly Charges ($)", min_value=18.0, max_value=120.0, value=65.0)
-    
-    with col2:
         partner = st.selectbox("👫 Partner", ['Yes', 'No'])
+
+    with col2:
         dependents = st.selectbox("👶 Dependents", ['Yes', 'No'])
-        phone_service = st.selectbox("📞 Phone Service", ['Yes', 'No'])
-    
-    st.sidebar.subheader("📋 Service Details")
+
+    st.sidebar.subheader("📋 Contract Details")
     col3, col4 = st.sidebar.columns(2)
-    
+
     with col3:
-        contract = st.selectbox("📄 Contract", ['Month-to-month', 'One year', 'Two year'])
+        tenure = st.number_input("📅 Tenure (months)", min_value=0, max_value=72, value=12)
+        contract = st.selectbox("📄 Contract", ['Month-to-month', 'One year', 'Two year'])    
+    
+    with col4: 
+        monthly_charges = st.number_input("💰 Monthly Charges ($)", min_value=18.0, max_value=120.0, value=65.0)
+        
+    st.sidebar.subheader("📋 Service Details")
+    col5, col6 = st.sidebar.columns(2)
+    
+    with col5:
+        
         payment_method = st.selectbox("� Payment Method", 
                                     ['Electronic check', 'Mailed check', 
                                      'Bank transfer (automatic)', 'Credit card (automatic)'])
+        phone_service = st.selectbox("📞 Phone Service", ['Yes', 'No'])
         internet_service = st.selectbox("🌐 Internet Service", ['DSL', 'Fiber optic', 'No'])
         paperless_billing = st.selectbox("📧 Paperless Billing", ['Yes', 'No'])
-    
-    with col4:
+        streaming_tv = st.sidebar.selectbox("📺 Streaming TV", ['Yes', 'No', 'No internet service'])
+        streaming_movies = st.sidebar.selectbox("🎬 Streaming Movies", ['Yes', 'No', 'No internet service'])
+
+    with col6:
+        tech_support = st.sidebar.selectbox("� Tech Support", ['Yes', 'No', 'No internet service'])
         multiple_lines = st.selectbox("📱 Multiple Lines", ['Yes', 'No', 'No phone service'])
         online_security = st.selectbox("🛡️ Online Security", ['Yes', 'No', 'No internet service'])
         online_backup = st.selectbox("💾 Online Backup", ['Yes', 'No', 'No internet service'])
         device_protection = st.selectbox("📱 Device Protection", ['Yes', 'No', 'No internet service'])
-        tech_support = st.sidebar.selectbox("� Tech Support", ['Yes', 'No', 'No internet service'])
-
-    st.sidebar.subheader("📺 Addons")
-    
-    streaming_tv = st.sidebar.selectbox("📺 Streaming TV", ['Yes', 'No', 'No internet service'])
-    streaming_movies = st.sidebar.selectbox("🎬 Streaming Movies", ['Yes', 'No', 'No internet service'])
+        
     
     # Customer Type (derived feature)
     if phone_service == 'Yes' and internet_service != 'No':
@@ -209,8 +214,6 @@ def page4_body():
         churn_prediction = model.predict(input_data)[0]
         
         # Display Results
-        st.header("🎯 Prediction Results")
-        
         # Create columns for layout
         col1, col2, col3 = st.columns([1, 2, 1])
         
