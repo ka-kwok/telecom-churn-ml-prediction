@@ -98,14 +98,15 @@ The project aims to identify key drivers of customer churn and develop a predict
 
 ## 📌 Hypothesis Validation
 
-| **Hypothesis** | **Variable Type(s)** | **Test Type** | **Purpose** | **Interpretation**  |
+| **Hypothesis** | **Variable Type(s)** | **Test / Result** | **Purpose** | **Interpretation**  |
 | --- | --- | --- | --- | --- |
-| **H1:** Customers on *month-to-month* contracts are more likely to churn. | Categorical (Contract Type vs Churn)| **Chi-Square Test of Independence** | Tests whether churn rate depends on contract type. | Significant p-value → churn is associated with contract type. |
-| **H2:** Customers with longer *tenure* are less likely to churn.| Continuous (Tenure) vs Binary (Churn)  | **Independent Samples t-test** or **Mann–Whitney U test** (if not normal) | Compares average tenure between churned and non-churned customers. | Lower mean tenure among churned → supports H2. |
-| **H3:** *SeniorCitizen* customers are more likely to churn.  | Binary (SeniorCitizen) vs Binary (Churn)| **Chi-Square Test**  | Checks if churn is associated with senior status. | Significant p-value → churn depends on senior status. |
-| **H4:** Customers with *fiber optic* internet have higher churn rates.| Categorical (InternetService vs Churn)| **Chi-Square Test**  | Tests whether churn depends on internet service type. | Higher churn % among “Fiber optic” → supports H4. |
-| **H5:** Internet customers with *OnlineSecurity* and *TechSupport* add-ons are less likely to churn. | Categorical (OnlineSecurity, TechSupport vs Churn) | **Chi-Square Test** for each variable  | Checks if having add-ons reduces churn probability.| Lower churn % among customers with these add-on service → supports H5. |
+| **H1:** Customers on *month-to-month* contracts are more likely to churn. | Categorical (Contract Type vs Churn)| **Chi-Square Test of Independence** / (p < 0.001) | Tests whether churn rate depends on contract type. | Significant p-value → churn is associated with contract type. |
+| **H2:** Customers with longer *tenure* are less likely to churn.| Continuous (Tenure) vs Binary (Churn)  | **Independent Samples t-test** / (p < 0.001) | Compares average tenure between churned and non-churned customers. | Lower mean tenure among churned → supports H2. |
+| **H3:** *SeniorCitizen* customers are more likely to churn.  | Binary (SeniorCitizen) vs Binary (Churn)| **Chi-Square Test** / (p < 0.001) | Checks if churn is associated with senior status. | Significant p-value → churn depends on senior status. |
+| **H4:** Customers with *fiber optic* internet have higher churn rates.| Categorical (InternetService vs Churn)| **Chi-Square Test** / (p < 0.001) | Tests whether churn depends on internet service type. | Higher churn % among “Fiber optic” → supports H4. |
+| **H5:** Internet customers with *OnlineSecurity* and *TechSupport* add-ons are less likely to churn. | Categorical (OnlineSecurity, TechSupport vs Churn) | **Chi-Square Test** for each variable / both (p < 0.001) | Checks if having add-ons reduces churn probability.| Lower churn % among customers with these add-on service → supports H5. |
 
+Statistical analysis confirms all five hypotheses, revealing that churn is significantly influenced (p < 0.001) by contract type, tenure, senior status, fiber optic usage, and the presence of the two  internet add-on services.
 
 ## 🔹 4. Exploratory Data Analysis (EDA)
 The exploratory data analysis phase provides critical insights into the underlying patterns and relationships that influence customer churn. This step lays the foundation for feature selection, model design, and business strategy.
