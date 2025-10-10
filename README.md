@@ -108,20 +108,50 @@ The project aims to identify key drivers of customer churn and develop a predict
 
 
 ## 🔹 4. Exploratory Data Analysis (EDA)
-- **Churn distribution**: ~26% churned (imbalanced dataset)  
-- **Tenure & Contract Type**: strongest relationship with churn  
-- **Churn correlation analysis**: 
-    - Service Type
-    - Tenure and contract Type
-    - Senior Customers
-    - Internet add-on serivces 
-- **Visualizations**: churn rates and distribution with barplots, piecharts, boxplots and parallel categories graph  
+The exploratory data analysis phase provides critical insights into the underlying patterns and relationships that influence customer churn. This step lays the foundation for feature selection, model design, and business strategy.
 
+#### **Churn Distribution**
+* Approximately 26% of customers have churned, indicating a class imbalance that must be addressed during modeling.
+
+* This imbalance suggests that churn is a relatively rare event, making precision and recall especially important for predictive performance.
+
+#### **Key Feature Relationships**
+* **Tenure and Contract Type** emerge as **the strongest predictors of churn**. Customers with shorter tenure and month-to-month contracts are significantly more likely to churn.
+
+* **Senior Customers** show a higher churn rate, possibly due to lower engagement with digital services or support limitations.
+
+* **Service Type** (e.g., `fiber optic` vs `DSL`) and **Internet Add-on Services** (like `OnlineSecurity` and `TechSupport`) also show meaningful correlations with churn behaviour.
+
+#### **Churn Correlation Analysis**
+
+* A correlation matrix and statistical tests reveal strong associations between churn and:
+
+    * **Contract Type**: Month-to-month contracts are highly correlated with churn.
+
+    * **Tenure**: Shorter tenure increases churn likelihood.
+
+    * **SeniorCitizen**: Older customers show distinct churn patterns.
+
+    * **Internet Add-ons**: Lack of services like Online Security and Tech Support correlates with higher churn.
+
+    * **Payment Method**: SHAP analysis later identifies Electronic Check as a strong churn indicator.
+
+#### **Visualizations**
+
+To support these findings, a variety of visual tools were used:
+
+* **Barplots**: Show churn rates across categorical features like contract type and payment method.
+
+* **Piecharts**: Illustrate churn proportions and service usage.
+
+* **Boxplots**: Compare tenure and monthly charges between churned and retained customers.
+
+* **Parallel Categories Graph**: Visualizes multi-feature interactions, revealing how combinations of contract type, service usage, and payment method influence churn.
 
 ## 🔹 5. Feature Engineering & Data Cleaning
-The preprocessing pipeline is designed to transform the raw Telecom Customer Churn dataset into a clean, machine-learning-ready format. It standardises data quality, engineers meaningful service-based features, and applies robust encoding and scaling methods to support predictive modelling.
+The preprocessing pipeline is designed to transform the raw Telecom Customer Churn dataset into 2 datasets: clean for EDA visualization and encoded with machine-learning-ready format. These standardise data quality, engineers meaningful service-based features, and applies robust encoding and scaling methods to support predictive modelling.
 
-# ETL & Data Cleaning (No Scaling)
+# Dataset A: ETL & Data Cleaning (No Scaling)
 
 ## Purpose
 Prepare raw telecom churn data for analysis by ensuring consistency, handling missing values, and engineering meaningful features.
@@ -147,14 +177,14 @@ Scaling is not applied at this stage to preserve the original data distribution 
 `telecom_customer_churn_cleaned.csv`
 
 
-#### 2️⃣ Feature Encoding & Scaling (For Modeling)
+#### Dataset B: Feature Encoding & Scaling (For Modeling)
 **Purpose:** Prepare encoded features for machine learning training.
 
 **Transformations:**
 - **Numerical columns:** Standardized using `StandardScaler()`.
 - **Categorical columns:** One-hot encoded using `OneHotEncoder()` (drop first to avoid multicollinearity).
 
-📁 **Output:** `telecom_customer_churn_encoded.csv`  
+**Output:** `telecom_customer_churn_encoded.csv`  
 
 ## 🔹 6. Model Development & Evaluation
 
@@ -197,7 +227,7 @@ Models compared:
     * These add-on services provide strong churn protection
     * Customers with these services are much less likely to leave
 
-*SHAP Plot Types Generated:*
+**SHAP Plot Types Generated:**
 * Beeswarm Plot: Shows feature impact distribution across all customers
 * Waterfall Plot: Explains one specific customer's prediction
 
@@ -231,7 +261,7 @@ Low-Risk Customer Profile:
 
 The variable `customerID` was removed during data preprocessing to eliminate any potential personally identifiable information (PII). This ensures that no individual customer can be directly identified from the dataset, aligning the project with data privacy regulations such as GDPR and CCPA. By anonymizing the dataset, the analysis focuses solely on behavioral and service-related patterns, maintaining both ethical integrity and data governance compliance.
 
-#### Ethical Treatment of Demographic Attributes
+#### Ethical Considerations of Demographic Attributes
 
 The feature `SeniorCitizen` and `gender` were initially included during exploratory analysis to understand demographic patterns influencing customer churn. Statistical tests indicated a measurable difference in churn behavior between senior and non-senior customers, offering valuable business insights for designing age-friendly retention programs.
 
