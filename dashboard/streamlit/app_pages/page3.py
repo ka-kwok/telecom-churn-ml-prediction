@@ -8,7 +8,6 @@ def page3_body():
     import pandas as pd
     import matplotlib.pyplot as plt
     import seaborn as sns
-    from scipy.stats import chi2_contingency, ttest_ind, mannwhitneyu
 
     @st.cache_data
     def load_data():
@@ -27,11 +26,17 @@ def page3_body():
     # KPI Metrics - Define top features using encoded dataframe
     correlation_matrix_temp = df_encoded.corr()
     correlation_with_churn_temp = correlation_matrix_temp["Churn_Yes"].abs().sort_values(ascending=False)
-    top_features_encoded = correlation_with_churn_temp.index[1:11]  # Skip 'Churn_Yes' itself
     
-    # Map back to original column names for display
+    # Get enough encoded features to ensure we have 10 unique ones
+    seen_features = set()
     top_features_cols = []
-    for feature in top_features_encoded:
+    feature_data_mapping = {}  # Map display name to actual data source
+    
+    # Process encoded features one by one until we have 10 unique features
+    for feature in correlation_with_churn_temp.index[1:]:  # Skip 'Churn_Yes' itself
+        if len(top_features_cols) >= 10:
+            break
+            
         # Handle encoded categorical columns (e.g., 'InternetService_Fiber optic', 'Contract_Month-to-month')
         if '_' in feature and not feature.endswith(('_Yes', '_No')):
             # This is likely a categorical column with values
@@ -43,13 +48,19 @@ def page3_body():
         else:
             original_name = feature
         
-        # Check if the original column name exists in the dataframe
-        if original_name in df.columns:
-            top_features_cols.append(original_name)
-        else:
-            # For display purposes, clean up the encoded name
-            display_name = feature.replace('_', ' ').replace(' Yes', '').replace(' No', '')
-            top_features_cols.append(display_name)
+        # Check if this is a new unique feature
+        if original_name not in seen_features:
+            seen_features.add(original_name)
+            
+            # Determine which data source to use for metrics
+            if original_name in df.columns:
+                top_features_cols.append(original_name)
+                feature_data_mapping[original_name] = 'original'
+            else:
+                # For encoded features, create a clean display name
+                display_name = feature.replace('_', ' ').replace(' Yes', '').replace(' No', '')
+                top_features_cols.append(display_name)
+                feature_data_mapping[display_name] = feature  # Store the encoded column name
 
     # Layout: 5 columns per row
     for i in range(0, len(top_features_cols), 5):

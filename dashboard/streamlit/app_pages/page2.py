@@ -188,9 +188,7 @@ def page2_body():
                 marker=dict(colors=colors),
                 domain={'x': [0.55, 1.0]}
             ))
-        #value by default
-
-
+        
         fig.update_layout(title_text=f"Churn proportions by {feature}", annotations=[dict(text=value, x=0.20, y=0.5, showarrow=False)])
         st.plotly_chart(fig, use_container_width=True)
         
