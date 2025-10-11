@@ -2,10 +2,9 @@ import os
 import streamlit as st
 
 def page3_body():
-    st.title("📊 Top 10 Churn Predictors")
+    st.title("📊 Top 10 Churn Drivers")
     st.write("---")
 
-    import os
     import pandas as pd
     import matplotlib.pyplot as plt
     import seaborn as sns
@@ -13,7 +12,6 @@ def page3_body():
 
     @st.cache_data
     def load_data():
-        import os
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
         csv_path = os.path.join(project_root, "dataset", "processed", "telecom_customer_churn_cleaned.csv")
@@ -26,11 +24,55 @@ def page3_body():
     churned = df[df['Churn'] == 'Yes']
     retained = df[df['Churn'] == 'No']
 
+    # KPI Metrics - Define top features using encoded dataframe
+    correlation_matrix_temp = df_encoded.corr()
+    correlation_with_churn_temp = correlation_matrix_temp["Churn_Yes"].abs().sort_values(ascending=False)
+    top_features_encoded = correlation_with_churn_temp.index[1:11]  # Skip 'Churn_Yes' itself
+    
+    # Map back to original column names for display
+    top_features_cols = []
+    for feature in top_features_encoded:
+        # Handle encoded categorical columns (e.g., 'InternetService_Fiber optic', 'Contract_Month-to-month')
+        if '_' in feature and not feature.endswith(('_Yes', '_No')):
+            # This is likely a categorical column with values
+            original_name = feature.split('_')[0]  # Take the part before the first underscore
+        elif '_Yes' in feature:
+            original_name = feature.replace('_Yes', '')
+        elif '_No' in feature:
+            original_name = feature.replace('_No', '')
+        else:
+            original_name = feature
+        
+        # Check if the original column name exists in the dataframe
+        if original_name in df.columns:
+            top_features_cols.append(original_name)
+        else:
+            # For display purposes, clean up the encoded name
+            display_name = feature.replace('_', ' ').replace(' Yes', '').replace(' No', '')
+            top_features_cols.append(display_name)
+
+    # Layout: 5 columns per row
+    for i in range(0, len(top_features_cols), 5):
+        cols = st.columns(5)
+        for j, feature in enumerate(top_features_cols[i:i+5]):
+            with cols[j]:
+                if df[feature].dtype == 'object':
+                    # For categorical: show most frequent value
+                    top_value = df[feature].mode()[0]
+                    count = df[feature].value_counts()[top_value]
+                    st.metric(label=f"{feature}", value=f"{top_value}", delta=f"{count:,} records")
+                else:
+                    # For numeric: show mean and std
+                    mean_val = df[feature].mean()
+                    std_val = df[feature].std()
+                    st.metric(label=f"{feature}", value=f"{mean_val:.2f}", delta=f"±{std_val:.2f}")
+
+    st.write("---")
     # Bar plot for top 10 features correlated with churn
     correlation_matrix = df_encoded.corr()
     correlation_with_churn = correlation_matrix["Churn_Yes"].abs().sort_values(ascending=False)
     top_10_features = correlation_with_churn.index[1:11]  # Exclude 'Churn_Yes' itself
-    top_10_values = correlation_with_churn[1:11]  # Exclude 'Churn_Yes' itself
+    top_10_values = correlation_with_churn.values[1:11]  # Exclude 'Churn_Yes' itself
     
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(x=top_10_values, y=top_10_features, palette="viridis")
@@ -47,32 +89,48 @@ def page3_body():
     st.write("---")
 
     # Filter for customers with internet service
-    internet_customers = df_encoded[df_encoded["InternetService_No"] == 0]
+    # Check which InternetService columns exist in the encoded dataframe
+    internet_service_cols = [col for col in df_encoded.columns if col.startswith('InternetService_')]
+    
+    if internet_service_cols:
+        # If we have InternetService columns, filter customers who have internet service
+        # (i.e., not the reference category which was dropped)
+        internet_mask = df_encoded[internet_service_cols].sum(axis=1) > 0
+        internet_customers = df_encoded[internet_mask]
+    else:
+        # If no encoded columns, use original data
+        internet_customers = df_encoded[df['InternetService'] != 'No']
 
     # Recalculate correlation for add-ons with churn
-    add_on_cols = [
+    potential_addon_cols = [
         "OnlineSecurity_Yes", "OnlineBackup_Yes", "DeviceProtection_Yes",
         "TechSupport_Yes", "StreamingTV_Yes", "StreamingMovies_Yes"
     ]
-    addon_corr_internet = internet_customers[add_on_cols + ["Churn_Yes"]].corr()["Churn_Yes"].abs().sort_values(ascending=False).head(6)
-    addon_corr_internet = addon_corr_internet.drop("Churn_Yes").head(5)
+    
+    # Filter to only include columns that actually exist in the dataframe
+    add_on_cols = [col for col in potential_addon_cols if col in internet_customers.columns]
+    
+    if add_on_cols and "Churn_Yes" in internet_customers.columns:
+        addon_corr_internet = internet_customers[add_on_cols + ["Churn_Yes"]].corr()["Churn_Yes"].abs().sort_values(ascending=False).head(6)
+        addon_corr_internet = addon_corr_internet.drop("Churn_Yes").head(5)
+    else:
+        # Create dummy data if columns don't exist
+        addon_corr_internet = pd.Series([], dtype=float)
 
-    plt.figure(figsize=(8, 5))
-    ax = sns.barplot(x=addon_corr_internet.values, y=addon_corr_internet.index, palette="magma")
+    if len(addon_corr_internet) > 0:
+        plt.figure(figsize=(8, 5))
+        ax = sns.barplot(x=addon_corr_internet.values, y=addon_corr_internet.index, palette="magma")
 
-    for container in ax.containers:
-        ax.bar_label(container, fmt='%.2f', label_type='edge', fontsize=10)
-        
-    plt.title("Top 5 Add-ons Correlated with Churn (Internet Customers)", fontsize=16)
-    plt.xlabel("Absolute Correlation with Churn", fontsize=10)
-    plt.ylabel("Internet Add-on", fontsize=10)
-    plt.show()
-    st.pyplot(plt)
+        for container in ax.containers:
+            ax.bar_label(container, fmt='%.2f', label_type='edge', fontsize=10)
+            
+        plt.title("Top 5 Add-ons Correlated with Churn (Internet Customers)", fontsize=16)
+        plt.xlabel("Absolute Correlation with Churn", fontsize=10)
+        plt.ylabel("Internet Add-on", fontsize=10)
+        plt.show()
+        st.pyplot(plt)
+    else:
+        st.warning("⚠️ Add-on service data not available for correlation analysis.")
 
-    st.write("---")
-
-    top_features_cols = [
-        "Contract", "tenure", "MonthlyCharges", "InternetService", "PaymentMethod",
-        "OnlineSecurity", "TechSupport", "SeniorCitizen", "StreamingTV", "PaperlessBilling"
-    ]
-    st.write(f"Top Features:{top_features_cols}")
+    st.markdown("---")
+    st.markdown("📍 Data source: Telecom Customer Churn Dataset")

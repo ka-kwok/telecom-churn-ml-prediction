@@ -8,11 +8,11 @@ import plotly.graph_objects as go
 import plotly.express as px
 
 def page4_body():
-    st.title("🎯 Churn Prediction App")
+    st.title("💻 Churn Prediction App")
     st.markdown("##### *AI-Powered Customer Retention Tool*")
-    st.write("💡 **Use the sidebar to input customer attributes and get real-time churn predictions with explanations!**")
     st.write("---")
-
+    st.write("👈 Enter customer details on sidebar and click **Predict Churn** to see the result")
+    
     # Load and prepare data
     @st.cache_data
     def load_and_prepare_data():
@@ -82,7 +82,8 @@ def page4_body():
         return
 
     # Customer input sidebar
-    st.sidebar.subheader("📋 Enter Customer Information")
+    st.sidebar.write("")
+    st.sidebar.subheader("👤 Customer Information")
     
     # Create input fields
     col1, col2 = st.sidebar.columns(2)
@@ -93,7 +94,7 @@ def page4_body():
     with col2:
         dependents = st.selectbox("👶 Dependents", ['Yes', 'No'])
 
-    st.sidebar.subheader("📋 Contract Details")
+    st.sidebar.write("📋 Contract Details")
     col3, col4 = st.sidebar.columns(2)
 
     with col3:
@@ -103,7 +104,7 @@ def page4_body():
     with col4: 
         monthly_charges = st.number_input("💰 Monthly Charges ($)", min_value=18.0, max_value=120.0, value=65.0)
         
-    st.sidebar.subheader("📋 Service Details")
+    st.sidebar.write("📋 Service Details")
     col5, col6 = st.sidebar.columns(2)
     
     with col5:
@@ -337,3 +338,6 @@ def page4_body():
         )
         fig.update_layout(height=400, yaxis={'categoryorder':'total ascending'})
         st.plotly_chart(fig, use_container_width=True)
+
+    st.markdown("---")
+    st.markdown("📍 Data source: Telecom Customer Churn Dataset")

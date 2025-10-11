@@ -11,7 +11,7 @@ app = MultiPage(app_name="Telecom Churn Analytics Dashboard")
 
 app.add_page("Introduction", page1_body)
 app.add_page("Churn Analysis", page2_body)
-app.add_page("Top 10 Churn Predictors", page3_body)
+app.add_page("Top 10 Churn Drivers", page3_body)
 app.add_page("Churn Prediction", page4_body)
 
 
