@@ -5,6 +5,7 @@ def page2_body():
     import pandas as pd
     import plotly.express as px
     import matplotlib.pyplot as plt
+    import plotly.graph_objects as go
     
 
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Contract Type and Tenure", "Senior Customers", "Internet Add-on Services", "Churn Rates Explorer", "Churn Drivers Map"])
@@ -87,9 +88,11 @@ def page2_body():
             title='🔍 Internet Service Usage Comparison: Seniors vs Non-Seniors',
             labels={'UsageRate': 'Usage Rate'}
         )
+
         fig.update_traces(texttemplate='%{y:.1%}', textposition='outside')
         fig.layout.height = 550
         fig.update_layout(yaxis_tickformat=".0%")
+        fig.add_vrect(x0=-0.5, x1=1.5, fillcolor="LightSkyBlue", opacity=0.5, layer="below", line_width=0)
         st.plotly_chart(fig, use_container_width=True)
     
     with tab3:
@@ -107,6 +110,13 @@ def page2_body():
                     labels={"Rate": "Churn Rate", "NumInternetServices": "Number of Internet Services"})
         fig.update_traces(texttemplate='%{y:.1%}', textposition='outside')
         fig.update_layout(yaxis_tickformat=".0%")
+        
+        # Add trendline to churn yes
+        churn_yes = melted_churn[melted_churn["Churn"] == "Yes"]
+        fig.add_traces(go.Scatter(x=churn_yes["NumInternetServices"], y=churn_yes["Rate"],
+                                   mode='lines+markers', name='Churn Trendline',
+                                   line=dict(color='DarkOrange', dash='dash')))
+
         st.plotly_chart(fig, use_container_width=True)
 
         # Proportion of the target variable 'Churn' by online security feature
@@ -145,8 +155,6 @@ def page2_body():
         st.pyplot(fig)
         
     with tab4:
-        import plotly.graph_objects as go
-
         st.title("Interactive Churn Rates Explorer")
         col1, col2 = st.columns(2)
         with col1:
