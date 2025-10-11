@@ -44,6 +44,7 @@ def page2_body():
                     hover_data=["MonthlyCharges", "PaymentMethod", "InternetService"])
         fig1.update_layout(boxmode="group", height=500)
         st.plotly_chart(fig1, use_container_width=True)
+         
 
         # Churn count by Tenure with filters
         churn_count = df[df["Churn"] == "Yes"].groupby("tenure").size()
@@ -51,6 +52,11 @@ def page2_body():
                     labels={"tenure": "Tenure (Months)", "y": "Number of Churns"},
                     title="Number of Churns by Tenure")
         st.plotly_chart(fig2, use_container_width=True)
+        with st.expander("🔍 Explanation"):
+            st.markdown("""
+            * ***Graph 1**: Majority of churned customers have a tenure of less than 12 months with Month to Month contract.*   
+            * ***Graph 2**: Many customers left within the first few months especially in the first month.*   
+        """)
 
     # Section: Senior customers analysis
     with tab2:
@@ -94,6 +100,12 @@ def page2_body():
         fig.update_layout(yaxis_tickformat=".0%")
         fig.add_vrect(x0=-0.5, x1=1.5, fillcolor="LightSkyBlue", opacity=0.5, layer="below", line_width=0)
         st.plotly_chart(fig, use_container_width=True)
+
+        with st.expander("🔍 Explanation"):
+            st.markdown("""
+            * ***Graph 1**: Senior customers tend to have a higher churn rate compared to non-seniors.*
+            * ***Graph 2-5**: Lower churn rates are observed with higher Tech support and online security services usage.*
+        """)
     
     with tab3:
         # Bar plot for NumInternetServices vs Churn rate
@@ -153,6 +165,12 @@ def page2_body():
             arrowprops=dict(arrowstyle="->", color="Purple", lw=2)
         )   
         st.pyplot(fig)
+
+        with st.expander("🔍 Explanation"):
+            st.markdown("""
+            * ***Graph 1**: More services subscribed are associated with lower churn rates significantly.*
+            * ***Graph 2-5**: Lower churn rates are observed with higher Tech support and online security services usage.*
+        """)
         
     with tab4:
         st.title("Interactive Churn Rates Explorer")
