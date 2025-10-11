@@ -66,7 +66,7 @@ def page3_body():
                     mean_val = df[feature].mean()
                     std_val = df[feature].std()
                     st.metric(label=f"{feature}", value=f"{mean_val:.2f}", delta=f"±{std_val:.2f}")
-
+    st.markdown("***Numeric drivers**: mean and std value, **categorical drivers**: most frequent value*")
     st.write("---")
     # Bar plot for top 10 features correlated with churn
     correlation_matrix = df_encoded.corr()

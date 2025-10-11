@@ -7,7 +7,7 @@ def page2_body():
     import matplotlib.pyplot as plt
     
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Contract Type and Tenure", "Senior Customers", "Internet Add-on Services", "Churn Drivers Map", "Churn Rates Explorer"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Contract Type and Tenure", "Senior Customers", "Internet Add-on Services", "Churn Rates Explorer", "Churn Drivers Map"])
 
     @st.cache_data
     def load_data():
@@ -27,7 +27,7 @@ def page2_body():
     tenure_range = st.sidebar.slider("Tenure Range (Months)", int(df["tenure"].min()), int(df["tenure"].max()), (0, 72))
 
     # Apply filters
-    filtered_df = df[
+    df = df[
         (df["Contract"].isin(selected_contracts)) &
         (df["Churn"].isin(selected_churn)) &
         (df["tenure"].between(tenure_range[0], tenure_range[1]))
@@ -36,7 +36,7 @@ def page2_body():
     # Section: Tenure vs Churn by Contract
     with tab1:
     
-        fig1 = px.box(filtered_df, x="Contract", y="tenure", color="Churn",
+        fig1 = px.box(df, x="Contract", y="tenure", color="Churn",
                     title="Churn Distribution: Tenure & Contract Type",
                     labels={"tenure": "Tenure (Months)", "Contract": "Contract Type", "Churn": "Churn"},
                     points="all",
@@ -45,7 +45,7 @@ def page2_body():
         st.plotly_chart(fig1, use_container_width=True)
 
         # Churn count by Tenure with filters
-        churn_count = filtered_df[filtered_df["Churn"] == "Yes"].groupby("tenure").size()
+        churn_count = df[df["Churn"] == "Yes"].groupby("tenure").size()
         fig2 = px.bar(churn_count, x=churn_count.index, y=churn_count.values,
                     labels={"tenure": "Tenure (Months)", "y": "Number of Churns"},
                     title="Number of Churns by Tenure")
@@ -145,35 +145,6 @@ def page2_body():
         st.pyplot(fig)
         
     with tab4:
-        @st.cache_data
-        def load_data():
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
-            csv_path = os.path.join(project_root, "dataset", "processed", "telecom_customer_churn_cleaned.csv")
-            df = pd.read_csv(csv_path)
-            return df
-
-        df = load_data()
-
-        df["Tenure"] = pd.cut(
-            df["tenure"],
-            bins=[0, 12, 24, 48, 72],
-            labels=["0-12", "13-24", "25-48", "49-72"]
-        )
-        df["Churn"] = df["Churn"].map({"No": 0, "Yes": 1})
-
-        # Parallel Categories Plot for tenure, contract type, senior citizen, num of internet service, online security, tech support Features vs Churn
-        fig = px.parallel_categories(
-            df,
-            dimensions=["NumInternetServices", "Contract", "Tenure", "SeniorCitizen", "OnlineSecurity", "TechSupport",  "Churn"],
-            color="Churn",
-            color_continuous_scale=px.colors.sequential.RdBu_r,
-            title="🔄 Parallel Categories Plot for Selected Features vs Churn"
-        )
-        fig.update_layout(height=600)
-        st.plotly_chart(fig, use_container_width=True)
-
-    with tab5:
         import plotly.graph_objects as go
 
         st.title("Interactive Churn Rates Explorer")
@@ -205,19 +176,53 @@ def page2_body():
             name=f"{feature} = {value}",
             hole=0.4,
             marker=dict(colors=colors),
-            domain={'x': [0, 0.48]}
+            domain={'x': [0, 0.45]}
         ))
         if show_both:
             fig.add_trace(go.Pie(
+                title=f"{feature} NOT {value}",
                 labels=labels,
                 values=pie_counts(sub_other),
-                name=f"{feature} != {value}",
+                name=f"{feature} NOT {value}",
                 hole=0.4,
                 marker=dict(colors=colors),
-                domain={'x': [0.52, 1.0]}
+                domain={'x': [0.55, 1.0]}
             ))
+        #value by default
+
+
         fig.update_layout(title_text=f"Churn proportions by {feature}", annotations=[dict(text=value, x=0.20, y=0.5, showarrow=False)])
         st.plotly_chart(fig, use_container_width=True)
+        
+    with tab5:
+        @st.cache_data
+        def load_data():
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+            csv_path = os.path.join(project_root, "dataset", "processed", "telecom_customer_churn_cleaned.csv")
+            df = pd.read_csv(csv_path)
+            return df
+
+        df = load_data()
+
+        df["Tenure"] = pd.cut(
+            df["tenure"],
+            bins=[0, 12, 24, 48, 72],
+            labels=["0-12", "13-24", "25-48", "49-72"]
+        )
+        df["Churn"] = df["Churn"].map({"No": 0, "Yes": 1})
+
+        # Parallel Categories Plot for tenure, contract type, senior citizen, num of internet service, online security, tech support Features vs Churn
+        fig = px.parallel_categories(
+            df,
+            dimensions=["NumInternetServices", "Contract", "Tenure", "SeniorCitizen", "OnlineSecurity", "TechSupport",  "Churn"],
+            color="Churn",
+            color_continuous_scale=px.colors.sequential.RdBu_r,
+            title="🔄 Parallel Categories Plot for Selected Features vs Churn"
+        )
+        fig.update_layout(height=600)
+        st.plotly_chart(fig, use_container_width=True)
+
 
     st.markdown("---")
     st.markdown("📍 Data source: Telecom Customer Churn Dataset")
