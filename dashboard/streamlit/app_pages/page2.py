@@ -104,7 +104,7 @@ def page2_body():
         with st.expander("🔍 Explanation"):
             st.markdown("""
             * ***Graph 1**: Senior customers tend to have a higher churn rate compared to non-seniors.*
-            * ***Graph 2-5**: Lower churn rates are observed with higher Tech support and online security services usage.*
+            * ***Graph 2**: Lower churn rates are observed with higher Tech support and online security services usage.*
         """)
     
     with tab3:
