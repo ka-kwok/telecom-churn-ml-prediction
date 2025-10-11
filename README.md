@@ -6,22 +6,25 @@ This project explores customer churn prediction for a telecom company using the 
 The analysis follows a structured workflow from **data profiling → data cleaning → EDA → feature engineering → ML modeling → churn prediction application**. 
 
 ## 🔹 Table of Contents
-1. [Introduction & Business Requirements](#🔹-1-introduction-and-business-requirements)  
+1. [Introduction & Business Requirements](#🔹-1-introduction--business-requirements)  
 2. [Dataset Description](#🔹-2-data-description)
-3. [Hypothesis and Methodology]((#🔹-3-hypothesis-and-methodology))
+3. [Hypothesis & Methodology]((#🔹-3-hypothesis--methodology))
 4. [Exploratory Data Analysis (EDA)]((#🔹-4-exploratory-data-analysis-eda))
 5. [Feature Engineering & Data Cleaning](#🔹-5-feature-engineering--data-cleaning)
 6. [Model Development & Evaluation](#🔹-6-model-development--evaluation)
 7. [Explainability & Insights](#🔹-7-explainability--insights)
 8. [Ethical Considerations & Data Governance](#🔹-8-ethical-considerations--data-governance)
 9. [Project Plan](#🔹-9-project-plan)
-10. 
+10. [Dashboard Design & Deployment](#🔹-10-dashboard-design--deployment)
+11. [Reflections & Professional Development](#🔹-11-reflections--professional-development)
+12. [Conclusion](#🔹-12-conclusion)
 
 
-## 🔹 1. Introduction and Business Requirements
-Customer churn is a major challenge in the telecom industry. Retaining existing customers is more cost-effective than acquiring new ones. 
 
-The project aims to identify key drivers of customer churn and develop a predictive model. Insights will inform business decisions, enhance retention strategies, and improve marketing effectiveness and product ROI.
+## 🔹 1. Introduction & Business Requirements
+**Customer churn** is a major challenge in the telecom industry. Retaining existing customers is more cost-effective than acquiring new ones. 
+
+The project aims to identify **key drivers** of customer churn and develop a **predictive model**. Insights will inform business decisions, enhance retention strategies, and improve marketing effectiveness and product ROI.
 
 ✅ Key Requirements
 * Accurate Churn Prediction
@@ -53,11 +56,12 @@ The project aims to identify key drivers of customer churn and develop a predict
 
 ## 🔹 2. Dataset Description 
  ### Dataset Summary
-- Source: Kaggle [Telecom Customer Churn dataset](https://www.kaggle.com/datasets/mubeenshehzadi/customer-churn-dataset/))  
+- Source: Kaggle [Telecom Customer Churn dataset](https://www.kaggle.com/datasets/mubeenshehzadi/customer-churn-dataset/))
 - ~7,000 records, 21 features  
 - Features: Tenure, Contract, Internet services, Monthly & Total Charges, etc
 - Target: **Churn (Yes/No)**  
-- Note: `customerID` identified as **PII** and removed  
+- Note: `customerID` identified as **PII** and removed
+- More details:[Ydata Profiling Report](report/telecom_customer_churn_data_profile.html)  
 
 ### 📄 Customer Churn Dataset Fields
 
@@ -85,7 +89,7 @@ The project aims to identify key drivers of customer churn and develop a predict
 
 
 
-## 🔹 3.Hypothesis and Methodology
+## 🔹 3.Hypothesis & Methodology
 **H1:** Customers on **`month-to-month`** contracts are more likely to churn than those on annual contracts.
 
 **H2:** Customers with longer **`tenure`** are less likely to churn.
@@ -152,7 +156,7 @@ To support these findings, a variety of visual tools were used:
 ## 🔹 5. Feature Engineering & Data Cleaning
 The preprocessing pipeline is designed to transform the raw Telecom Customer Churn dataset into 2 datasets: clean for EDA visualization and encoded with machine-learning-ready format. These standardise data quality, engineers meaningful service-based features, and applies robust encoding and scaling methods to support predictive modelling.
 
-# Dataset A: ETL & Data Cleaning (No Scaling)
+### Dataset A: ETL & Data Cleaning (No Scaling)
 
 ## Purpose
 Prepare raw telecom churn data for analysis by ensuring consistency, handling missing values, and engineering meaningful features.
@@ -178,7 +182,7 @@ Scaling is not applied at this stage to preserve the original data distribution 
 `telecom_customer_churn_cleaned.csv`
 
 
-#### Dataset B: Feature Encoding & Scaling (For Modeling)
+### Dataset B: Feature Encoding & Scaling (For Modeling)
 **Purpose:** Prepare encoded features for machine learning training.
 
 **Transformations:**
@@ -272,16 +276,38 @@ This approach maintains analytical transparency while safeguarding against discr
 
 ## 🔹 9. Project Plan
 **Implementation & Maintenance Workflow:**  
-- Ideation and Project Setup
-- Data cleaning and preprocessing  
-- Exploratory Data Analysis (EDA) and visualization  
-- Feature engineering and data transformation  
-- Model training and hyperparameter tuning (Logistic Regression, AdaBoost, Random Forest, XGBoost)  
-- Model evaluation and explainability (confusion matrix, feature importance, SHAP)  
-- Dashboard development using Streamlit for interactive churn prediction and monitoring  
-- Model retraining scheduled monthly with new data  
-- Continuous monitoring for data drift and retraining as needed  
-- Future enhancement: Full deployment as a Streamlit-based monitoring dashboard  
+1. **Ideation and Project Setup**
+* Define project objectives, scope, and success metrics. 
+* Prepare tools and environment for data analytics.
+
+2. **Data Cleaning and Preprocessing**
+* Handle missing data, remove duplicates, address PII, and prepare the dataset for analysis.
+
+3. **Exploratory Data Analysis (EDA) and Visualization**
+* Explore customer behavior patterns and churn trends using descriptive statistics and visual analytics.
+
+4. **Feature Engineering and Data Transformation**
+* Create derived features such as customer type and internet add-on counts to improve model performance.
+
+5. **Model Training and Hyperparameter Tuning**
+* Train and optimize multiple models — Logistic Regression, AdaBoost, Random Forest, and XGBoost — to identify the best performer.
+
+6. **Model Evaluation and Explainability**
+* Assess models using confusion matrix, precision/recall, F1, and ROC-AUC metrics. Apply SHAP and feature importance for interpretability.
+
+7. **Dashboard Development (Streamlit)**
+* Build an interactive Streamlit dashboard for real-time churn prediction and business insights visualization.
+
+*Future Substainable Development*
+
+8. **Model Retraining and Maintenance**
+* Schedule monthly retraining with new data to maintain accuracy and adapt to customer behavior changes.
+
+9. **Continuous Monitoring and Data Drift Detection**
+* Track model performance over time and trigger retraining when drift or accuracy degradation is detected.
+
+10. **Potential Enhancements**
+* Extend to a fully deployed Streamlit-based churn monitoring and analytics platform with API integration.
 
 ### Agile Methodology
 
@@ -298,28 +324,38 @@ Each sprint focuses on one phase — from data cleaning to model deployment — 
 
 For more details, please visit the [Project Kanban Board](https://github.com/users/ka-kwok/projects/8) on Github.
 
-This iterative workflow with sub-tasks on each sprint ensures flexibility, rapid experimentation, and continuous model improvement based on new data and stakeholder feedback.
+This **iterative workflow** with sub-tasks on each sprint ensures flexibility, rapid experimentation, and continuous model improvement based on new data and stakeholder feedback.
 
-## Dashboard Design
-* List all dashboard pages and their content, either blocks of information or widgets, like buttons, checkboxes, images, or any other item that your dashboard library supports.
-* Later, during the project development, you may revisit your dashboard plan to update a given feature (for example, at the beginning of the project you were confident you would use a given plot to display an insight but subsequently you used another plot type).
-* How were data insights communicated to technical and non-technical audiences?
-* Explain how the dashboard was designed to communicate complex data insights to different audiences. 
+## 🔹 10.Dashboard Design & Deployment
 
-## Unfixed Bugs
-* Please mention unfixed bugs and why they were not fixed. This section should include shortcomings of the frameworks or technologies used. Although time can be a significant variable to consider, paucity of time and difficulty understanding implementation are not valid reasons to leave bugs unfixed.
-* Did you recognise gaps in your knowledge, and how did you address them?
-* If applicable, include evidence of feedback received (from peers or instructors) and how it improved your approach or understanding.
 
-## Development Roadmap
-* What challenges did you face, and what strategies were used to overcome these challenges?
-* What new skills or tools do you plan to learn next based on your project experience? 
+**Prototype tool**: Balsamiq Wireframes 
+* 4 pages of wireframe are created at the early stage. 
 
-## Deployment
-### Heroku
+    * [Page 1. Introduction](dashboard/wireframes/P1-Introduction.png)
+    * [Page 2. Churn Analysis](dashboard/wireframes/P2-Churn-Analysis.png)
+    * [Page 3. Top Churn Drivers](dashboard/wireframes/P3-Top-Churn-Drivers.png)
+    * [Page 4. Churn Prediction App](dashboard/wireframes/P4-Churn-Prediction-App.png)
 
-* The App live link is: https://YOUR_APP_NAME.herokuapp.com/ 
-* Set the runtime.txt Python version to a [Heroku-20](https://devcenter.heroku.com/articles/python-support#supported-runtimes) stack currently supported version.
+
+**Design priniciple**: Intuitive and insightful for non-techical stakeholders
+
+**Dashboard Tools**: Streamlit
+
+**Main Design Features**:
+
+* High-level KPIs, trendlines, and concise natural-language summaries on the Overview page.
+
+* Actionable recommendations with simple explanations (e.g., “Offer Tech Support to high-risk customers” and expected impact).
+
+* Visual metaphors: gauges, spark-lines, and ranked lists rather than raw numbers.
+
+* Tooltips and “explain this” microcopy for each chart to translate metrics into business meaning.
+ 
+### Deployment - Heroku
+
+* Set the Python version in .python-version to `python 3.12` which is currently supported in [Heroku-20](https://devcenter.heroku.com/articles/python-support#supported-runtimes) stack.
+
 * The project was deployed to Heroku using the following steps.
 
 1. Log in to Heroku and create an App
@@ -330,30 +366,96 @@ This iterative workflow with sub-tasks on each sprint ensures flexibility, rapid
 6. If the slug size is too large then add large files not required for the app to the .slugignore file.
 
 
-## Main Data Analysis Libraries
-* Here you should list the libraries you used in the project and provide an example(s) of how you used these libraries.
+### **Final Production**: 
 
+[**Streamlit App**](https://churn-prediction-dashboard-eb8fc56f02be.herokuapp.com/)
+
+[**User Guide**](dashboard/CHURN_PREDICTION_USER_GUIDE.md) for Churn Prediction App
+
+
+## 🔹 11. Reflections & Professional Development
+**Tools and Libraries adopted**: 
+* Data process: Pandas 
+* Visualization: Matplotlib, Seaborn, Ploty
+* ML: Scikit-learn; XGBoost
+* Prototype: Balsamiq Wireframes
+* Dashboard: Streamlit
+
+**Key Learnings**:
+
+* Building and automating **ML pipelines** for efficient preprocessing and model training
+
+* Applying **hyperparameter tuning** and **cross-validation** to optimize performance
+
+* Understanding the concept of **global and ensemble modeling** (e.g., combining logistic regression with tree-based methods)
+
+* Implementing **explainable AI (XAI)** techniques such as **SHAP** to interpret model behavior and feature impact
+
+* Integrating **AI-assisted coding tools** (Copolit with various models) to accelerate development, debugging, and documentation processes
+
+**Challenges & Solutions**:
+
+* **Feature Name Discrepancy**:
+
+    When encoding categorical variables, the transformed feature names often became disconnected from the original columns, making it difficult to interpret model outputs and SHAP explanations.
+
+    **Solution**:
+
+    * Namespace encoded features using OneHotEncoder.get_feature_names_out() or pd.get_dummies(prefix=...).
+
+    * Maintain a reproducible feature mapping file (original → transformed) and store it with the ML pipeline for consistent reference.
+
+* **Scaling and Interpretability Issues**:
+
+    Applying standard scaling to all numeric variables sometimes distorted model interpretability or violated assumptions for simpler models (e.g., Logistic Regression).
+
+    **Solution**:
+
+    * Perform scaling only in the encoded dataset, not the cleaned raw data.
+
+    * Use ColumnTransformer explicitly with named transformers to ensure full control over transformations.
+
+**Next Steps**
+
+* **Explore AutoML Frameworks:**
+Evaluate tools such as **Auto-sklearn** and **H2O AutoML** to automate feature selection, model tuning, and performance benchmarking.
+
+* **Prototype Deep Learning Approaches:**
+Experiment with advanced architectures (e.g., **TabNet**, **DeepFM**) to model complex, non-linear customer churn behaviors.
+
+* **Formalize Monitoring and Retraining Strategy:**
+Establish **performance thresholds**, automate **data drift detection**, and schedule **monthly retraining** to maintain model relevance.
+
+
+## 🔹 12. Conclusion
+
+The developed churn prediction models effectively identify high-risk customers and provide actionable insights for retention.
+
+Among all tested algorithms, Logisic Regression achieved the highest overall performance with a Precision score of 0.69, demonstrating superior predictive capability.
+
+**Key churn drivers** include:
+
+`Contract type`: `Month-to-month` customers are more likely to churn.
+
+`tenure`: longer the stay correlate lower risk to churn.
+
+`Online security` services: Absence increases churn risk.
+
+`Tech support` services: Absence increases churn risk.
+
+These insights provide clear direction for business strategy — enabling data-driven decisions for **customer retention**, **pricing optimization**, and **service improvement** within the telecom domain.
 
 ## Credits 
 
-* In this section, you need to reference where you got your content, media and extra help from. It is common practice to use code from other repositories and tutorials, however, it is important to be very specific about these sources to avoid plagiarism. 
-* You can break the credits section up into Content and Media, depending on what you have included in your project. 
+* Credits to the Code Institute LMS platform for code references as well as Microsoft co-pilot for ideation, coding support and error handling.
 
-### Content 
 
-- The text for the Home page was taken from Wikipedia Article A
-- Instructions on how to implement form validation on the Sign-Up page was taken from [Specific YouTube Tutorial](https://www.youtube.com/)
-- The icons in the footer were taken from [Font Awesome](https://fontawesome.com/)
-
-### Media
-
-- The photos used on the home and sign-up page are from This Open-Source site
-- The images used for the gallery page were taken from this other open-source site
+## Acknowledgements
+* Many thanks to the Code Institute team inculding Vasi, Roman, Mark and Niel as well as the fellow classmates who have been of great support and help in our quest for knowledge in Data Analytics. 
 
 
 
-## Acknowledgements (optional)
-* Thank the people who provided support through this project.
 
-
+##
+*Capstone Project by Dennis Kwok*  
 # ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
