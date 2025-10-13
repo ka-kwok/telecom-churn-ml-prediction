@@ -156,53 +156,85 @@ To support these findings, a variety of visual tools were used:
 ## 🔹 5. Feature Engineering & Data Cleaning
 The preprocessing pipeline is designed to transform the raw Telecom Customer Churn dataset into 2 datasets: clean for EDA visualization and encoded with machine-learning-ready format. These standardise data quality, engineers meaningful service-based features, and applies robust encoding and scaling methods to support predictive modelling.
 
-### Dataset A: ETL & Data Cleaning (No Scaling)
+## Dataset A: ETL & Data Cleaning (No Scaling)
 
-## Purpose
+### Purpose
 Prepare raw telecom churn data for analysis by ensuring consistency, handling missing values, and engineering meaningful features.
 
-## Key Steps
-### 1. Data Cleaning
+### Key Steps
+**Data Cleaning**
 - Removed personally identifiable information (`customerID`) to ensure compliance with data governance.  
 - Converted `TotalCharges` to numeric and handled invalid or missing entries.
 
-### 2. Missing Value Handling
+**Missing Value Handling**
 - Imputed missing `TotalCharges` values using the relationship:  
-  `TotalCharges = MonthlyCharges * tenure`  
+
+  `TotalCharges = MonthlyCharges * tenure` (*Regardless of the monthly charges changes*) 
+
 - Applied median imputation for remaining numerical fields.
 
-### 3. Feature Engineering
+**Feature Engineering**
 - **CustomerType:** Classified customers as *Phone only*, *Internet only*, or *Both* based on service subscriptions.  
 - **NumInternetServices:** Counted active internet add-ons such as *OnlineSecurity*, *TechSupport*, and *StreamingTV*.
 
-## Notes
-Scaling is not applied at this stage to preserve the original data distribution for exploratory analysis and statistical testing.
+#### *Notes: Scaling is not applied at this stage to preserve the original data distribution for exploratory analysis and statistical testing.*
 
-## Output File
-`telecom_customer_churn_cleaned.csv`
+### Output File
+[`telecom_customer_churn_cleaned.csv`](dataset/processed/telecom_customer_churn_cleaned.csv)
 
 
-### Dataset B: Feature Encoding & Scaling (For Modeling)
-**Purpose:** Prepare encoded features for machine learning training.
+## Dataset B: Feature Encoding & Scaling (For Modeling)
+### Purpose
+Prepare encoded features for machine learning training.
 
+### Key Steps
 **Transformations:**
 - **Numerical columns:** Standardized using `StandardScaler()`.
+
+    - `tenure`, `MonthlyCharges`, `TotalCharges`,
 - **Categorical columns:** One-hot encoded using `OneHotEncoder()` (drop first to avoid multicollinearity).
 
-**Output:** `telecom_customer_churn_encoded.csv`  
+    - `gender`, `SeniorCitizen`, `Partner`,`Dependents`, `PhoneService`, `MultipleLines`, `InternetService`, `OnlineSecurity` `OnlineBackup`, `DeviceProtection`, `TechSupport`, `StreamingTV`, `StreamingMovies`, `Contract`, `PaperlessBilling`, `PaymentMethod`, `Churn`, `CustomerType`, `NumInternetServices`
+
+### Output File 
+[`telecom_customer_churn_encoded.csv`](dataset/processed/telecom_customer_churn_encoded.csv) 
 
 ## 🔹 6. Model Development & Evaluation
 
-Models compared:  
+**Base Models comparison**:  
 - Logistic Regression (best)  
-- Adaboost  
-- XGBoost  
+- AdaboostClassifier
+- GradientClassifier
+- RandomForestClassifier
+- GradientBoostingClassifier
+- DecisionTreeClassifier  
 
-| Model                   | Accuracy | Precision | Recall  | F1   | ROC-AUC |
-|-------------------------|----------|-----------|---------|------|---------|
-| **Logistic Regression** | **0.82** | **0.69**  | **0.54**| 0.60 | 0.85    |
-| Adaboost                | 0.81     | 0.69      | 0.50    | 0.58 | **0.85**|
-| XGBoost                 | 0.81     | 0.67      | 0.50.   | 0.58 | 0.85    |
+**Top 3 performance:**
+
+| Model                   | Accuracy  | Precision | Recall    |    F1     | ROC-AUC    |
+|-------------------------|-----------|-----------|-----------|-----------|------------|
+| **Logistic Regression** | **0.799** | **0.690** | **0.537** | **0.604** | 0.850      |
+| Adaboost                | 0.798     | 0.84      | 0.504     | 0.580     | **0.853**  |
+| GradientBoosting        | 0.795     | 0.87      | 0.504     | 0.582     | 0.851      |
+
+
+**Result of Hyperparameters Tuning with Advanced Models**
+
+Best model:
+* Logistic Regression
+
+Best parameters:
+* (model_c, c=1.0) - best
+
+* (model_c, c=2.0) - overfitted as test accuracy dropped from 0.818 to 0.817.
+
+**Final Performance with Feature Importance Refitted**
+
+|                  | Accuracy |  precision |  recall  |
+|------------------|----------|------------|----------|
+|TRAIN PERFORMANCE |   0.80   |  0.65      |  0.55    |     
+|TEST PERFORMANCE  |   0.82   |  0.69      |  0.54    |
+
 
 
 ## 🔹 7. Explainability & Insights
@@ -270,9 +302,9 @@ The variable `customerID` was removed during data preprocessing to eliminate any
 
 The feature `SeniorCitizen` and `gender` were initially included during exploratory analysis to understand demographic patterns influencing customer churn. Statistical tests indicated a measurable difference in churn behavior between senior and non-senior customers, offering valuable business insights for designing age-friendly retention programs.
 
-However, to ensure compliance with ethical AI principles and avoid potential age-related and gender-related bias, these attributes were excluded from the final predictive model. The decision prevents the model from making churn predictions based on age and gender proxies, aligning with data governance standards such as GDPR’s fairness principle and responsible AI practices.
+However, to ensure compliance with **ethical AI principles** and avoid potential **age-related** and **gender-related bias**, these attributes were excluded from the final predictive model. The decision prevents the model from making churn predictions based on age and gender proxies, aligning with data governance standards such as **GDPR’s fairness principle** and **responsible AI practices**.
 
-This approach maintains analytical transparency while safeguarding against discrimination, ensuring that predictions are driven by behavioral and service-related features rather than demographic attributes.
+This approach maintains **analytical transparency** while **safeguarding against discrimination**, ensuring that predictions are driven by behavioral and service-related features rather than demographic attributes.
 
 ## 🔹 9. Project Plan
 **Implementation & Maintenance Workflow:**  
@@ -403,7 +435,7 @@ This **iterative workflow** with sub-tasks on each sprint ensures flexibility, r
 
     * Namespace encoded features using OneHotEncoder.get_feature_names_out() or pd.get_dummies(prefix=...).
 
-    * Maintain a reproducible feature mapping file (original → transformed) and store it with the ML pipeline for consistent reference.
+    * Maintain a reproducible feature mapping file (original → cleaned → encoded) and store it with the ML pipeline for consistent reference.
 
 * **Scaling and Interpretability Issues**:
 
@@ -431,7 +463,7 @@ Establish **performance thresholds**, automate **data drift detection**, and sch
 
 The developed churn prediction models effectively identify high-risk customers and provide actionable insights for retention.
 
-Among all tested algorithms, Logisic Regression achieved the highest overall performance with a Precision score of 0.69, demonstrating superior predictive capability.
+Among all tested algorithms, Logisic Regression achieved the highest overall performance with a Accuracy Score of 0.82 and Precision score of 0.69, demonstrating superior predictive capability.
 
 **Key churn drivers** include:
 
