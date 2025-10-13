@@ -4,7 +4,8 @@ matplotlib==3.8.0
 seaborn==0.13.2
 ydata-profiling==4.12.0 # can be removed from requirements before deployment
 setuptools==80.9.0 # can be removed from requirements before deployment
-ipywidgetsipywidgets==8.1.7 # can be removed from requirements before deployment
+ipywidgets==8.1.7 # can be removed from requirements before deployment
+ipython==8.18.1 # can be removed from requirements before deployment
 plotly==5.17.0
 ppscore==1.1.0 # can be removed from requirements before deployment
 streamlit==1.40.2
